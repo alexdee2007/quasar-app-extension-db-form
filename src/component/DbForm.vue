@@ -9,9 +9,7 @@
   import { get, set, merge, cloneDeep, isEqualWith } from 'lodash';
   import { equalModelValues } from '../utils/strings';
   import { stopAndPrevent } from '../utils/events';
-
   import models from 'src/models';
-
   export default {
     name: 'DbForm',
     provide() {
@@ -26,7 +24,7 @@
       },
       initialValue: {
         type: Object,
-        required: true
+        default: () => ({})
       },
       modelName: String,
       isDirty: Boolean,
@@ -40,7 +38,7 @@
         return models[this.modelName];
       },
       canLeave() {
-        return !this.notChanged;
+        return this.notChanged;
       },
       notChanged() {
         return isEqualWith(this.value, this.loadedValue, equalModelValues);
@@ -91,19 +89,20 @@
       submit(evt) {
         evt && stopAndPrevent(evt);
         this.$v.$touch();
-        !this.$v.$error && this.$emit('submit', cloneDeep(this.value));
+        !this.$v.$error && this.$emit('submit');
       },
       reset(evt) {
         evt && stopAndPrevent(evt);
         this.$emit('update:value', cloneDeep(this.initialValue));
+        this.loadedValue = cloneDeep(this.initialValue);
         this.$v.$reset();
-        this.$emit('reset', this.initialValue);
+        this.$emit('reset');
       },
       cancel(evt) {
         evt && stopAndPrevent(evt);
         this.$emit('update:value', cloneDeep(this.loadedValue));
         this.$v.$reset();
-        this.$emit('cancel', this.loadedValue);
+        this.$emit('cancel');
       }
     },
     validations() {
