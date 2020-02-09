@@ -10,6 +10,8 @@
   import { equalModelValues } from '../utils/strings';
   import { stopAndPrevent } from '../utils/events';
   import models from 'src/models';
+  import modelApi from 'src/api/model';
+
   export default {
     name: 'DbForm',
     provide() {
@@ -31,7 +33,8 @@
       extraValidations: {
         type: Function,
         default: () => ({})
-      }
+      },
+      saveOnSubmit: Boolean
     },
     computed: {
       model() {
@@ -57,6 +60,7 @@
     },
     methods: {
       hasPath(path) {
+        //console.log('hasPath', path, this.value);
         if (get(this.value, path) !== undefined) {
           return true;
         } else {
@@ -86,15 +90,30 @@
         this.model && iterator(this.model.fields);
         return validations;
       },
+      async save() {
+        try {
+          this.$q.loading.show({message: 'Збереження...'});
+          this.loadedValue = await modelApi.save(this.modelName, this.value);
+          this.$q.notify({color: 'positive', timeout: 2500, message: 'Дані успішно збережно', position: 'top', icon: 'done'});
+          this.$emit('save', cloneDeep(this.loadedValue));
+        } catch (err) {
+          console.error(err);
+        } finally {
+          this.$q.loading.hide();
+        }
+      },
       submit(evt) {
         evt && stopAndPrevent(evt);
         this.$v.$touch();
-        !this.$v.$error && this.$emit('submit');
+        if (this.$v.$error) {
+          return false;
+        }
+        this.$emit('submit');
+        this.saveOnSubmit && this.save();
       },
       reset(evt) {
         evt && stopAndPrevent(evt);
         this.$emit('update:value', cloneDeep(this.initialValue));
-        this.loadedValue = cloneDeep(this.initialValue);
         this.$v.$reset();
         this.$emit('reset');
       },
@@ -106,14 +125,13 @@
       }
     },
     validations() {
-      return this.model ? {
-        value: merge(this.getValidationsRecursively(), this.extraValidations())
-      } : {};
+      return this.model ? {value: merge({}, this.getValidationsRecursively(), this.extraValidations())} : {};
     },
-    mounted() {
+    async mounted() {
       this.$emit('update:value', merge({}, this.initialValue, this.value));
-      this.loadedValue = cloneDeep(this.value);
       this.isDirty && this.$v.$touch();
+      await this.$nextTick();
+      this.loadedValue = cloneDeep(this.value);
     }
   }
 </script>
