@@ -31,7 +31,7 @@
       modelName: String,
       isDirty: Boolean,
       extraValidations: {
-        type: Function,
+        type: Object,
         default: () => ({})
       },
       saveOnSubmit: Boolean
@@ -125,7 +125,7 @@
       }
     },
     validations() {
-      return this.model ? {value: merge({}, this.getValidationsRecursively(), this.extraValidations())} : {};
+      return this.model ? {value: merge({}, this.getValidationsRecursively(), this.extraValidations)} : {};
     },
     async mounted() {
       this.$emit('update:value', merge({}, this.initialValue, this.value));
