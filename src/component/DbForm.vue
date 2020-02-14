@@ -60,7 +60,6 @@
     },
     methods: {
       hasPath(path) {
-        //console.log('hasPath', path, this.value);
         if (get(this.value, path) !== undefined) {
           return true;
         } else {
@@ -125,7 +124,7 @@
       }
     },
     validations() {
-      return this.model ? {value: merge({}, this.getValidationsRecursively(), this.extraValidations)} : {};
+      return this.model ? {value: merge({}, this.getValidationsRecursively(), get(this.extraValidations, this.modelName))} : {};
     },
     async mounted() {
       this.$emit('update:value', merge({}, this.initialValue, this.value));
