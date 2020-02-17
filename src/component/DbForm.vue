@@ -5,8 +5,10 @@
 </template>
 
 <script>
+
+  import deepKeys from 'deep-keys';
   import { singularize } from 'inflection';
-  import { get, set, merge, cloneDeep, isEqualWith } from 'lodash';
+  import { get, set, merge, cloneDeep, isEqualWith, pick } from 'lodash';
   import { equalModelValues } from '../utils/strings';
   import { stopAndPrevent } from '../utils/events';
   import models from 'src/models';
@@ -95,7 +97,8 @@
       async save() {
         try {
           this.$q.loading.show({message: 'Збереження...'});
-          this.loadedValue = await modelApi.save(this.modelName, this.value);
+          const data = await modelApi.save(this.modelName, this.value);
+          this.loadedValue = pick(data, deepKeys(this.initialValue));
           this.$q.notify({color: 'positive', timeout: 2500, message: 'Дані успішно збережно', position: 'top', icon: 'done'});
           this.$emit('save', cloneDeep(this.loadedValue));
         } catch (err) {
