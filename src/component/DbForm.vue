@@ -84,6 +84,9 @@
               const modelObj = models[field.relation === 'hasMany' ? singularize(key) : key];
               modelObj && iterator(modelObj.fields, field.relation === 'hasMany' ? `${newKey}.$each` : newKey);
             }
+            if (field.type === undefined && typeof field === 'object') {
+              iterator(field, newKey);
+            }
           });
         }
         this.model && iterator(this.model.fields);
