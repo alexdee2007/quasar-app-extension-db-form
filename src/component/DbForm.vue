@@ -1,7 +1,7 @@
 <template>
-  <form class="q-form" @submit="submit" @reset="reset">
+  <q-form @submit="submit" @reset="reset" v-bind="$props">
     <slot></slot>
-  </form>
+  </q-form>
 </template>
 
 <script>
@@ -22,6 +22,7 @@
       }
     },
     props: {
+      autofocus: Boolean,
       value: {
         type: Object,
         required: true
