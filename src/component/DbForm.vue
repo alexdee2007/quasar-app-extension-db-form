@@ -23,6 +23,7 @@
     },
     props: {
       autofocus: Boolean,
+      beforeSubmit: Function,
       value: {
         type: Object,
         required: true
@@ -108,14 +109,15 @@
           this.$q.loading.hide();
         }
       },
-      submit(evt) {
+      async submit(evt) {
         evt && stopAndPrevent(evt);
         this.$v.$touch();
         if (this.$v.$error) {
           return false;
         }
+        this.beforeSubmit && await this.beforeSubmit(this.value);
         this.$emit('submit');
-        this.saveOnSubmit && this.save();
+        this.saveOnSubmit && await this.save();
       },
       reset(evt) {
         evt && stopAndPrevent(evt);
