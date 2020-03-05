@@ -104,8 +104,9 @@
         try {
           this.$q.loading.show({message: 'Збереження...'});
           const data = await modelApi.save(this.modelName, this.value);
-          this.loadedValue = isEmpty(this.initialValue) ? this.value : pick(this.value, deepKeys(this.initialValue));
+          this.loadedValue = isEmpty(this.initialValue) ? merge({}, this.value, data) : pick(data, deepKeys(this.initialValue));
           this.$q.notify({color: 'positive', timeout: 2500, message: 'Дані успішно збережно', position: 'top', icon: 'done'});
+          this.$emit('update:value', cloneDeep(this.loadedValue));
           this.$emit('save', cloneDeep(this.loadedValue));
         } catch (err) {
           console.error(err);
