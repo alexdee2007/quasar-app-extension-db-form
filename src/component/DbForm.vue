@@ -32,7 +32,10 @@
         type: Object,
         default: () => ({})
       },
-      modelName: String,
+      modelName: {
+        type: String,
+        required: true
+      },
       isDirty: Boolean,
       extraValidations: {
         type: Object,
@@ -59,7 +62,8 @@
     },
     data() {
       return {
-        loadedValue: {}
+        loadedValue: {},
+        validationValue: {}
       }
     },
     methods: {
@@ -133,12 +137,13 @@
       }
     },
     validations() {
-      return this.model ? {value: merge({}, this.getValidationsRecursively(), get(this.extraValidations, this.modelName))} : {};
+      return {value: this.validationValue};
     },
     async mounted() {
       this.$emit('update:value', merge({}, this.initialValue, this.value));
-      this.isDirty && this.$v.$touch();
       await this.$nextTick();
+      this.model && (this.validationValue = merge({}, this.getValidationsRecursively(), get(this.extraValidations, this.modelName)));
+      this.isDirty && this.$v.$touch();
       this.loadedValue = cloneDeep(this.value);
     }
   }
