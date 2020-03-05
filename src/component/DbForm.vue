@@ -8,7 +8,7 @@
 
   import deepKeys from 'deep-keys';
   import { singularize } from 'inflection';
-  import { get, set, merge, cloneDeep, isEqualWith, pick } from 'lodash';
+  import { get, set, merge, cloneDeep, isEqualWith, pick, isEmpty } from 'lodash';
   import { equalModelValues } from '../utils/strings';
   import { stopAndPrevent } from '../utils/events';
   import models from 'src/models';
@@ -104,7 +104,7 @@
         try {
           this.$q.loading.show({message: 'Збереження...'});
           const data = await modelApi.save(this.modelName, this.value);
-          this.loadedValue = pick(data, deepKeys(this.initialValue));
+          this.loadedValue = isEmpty(this.initialValue) ? this.value : pick(this.value, deepKeys(this.initialValue));
           this.$q.notify({color: 'positive', timeout: 2500, message: 'Дані успішно збережно', position: 'top', icon: 'done'});
           this.$emit('save', cloneDeep(this.loadedValue));
         } catch (err) {
