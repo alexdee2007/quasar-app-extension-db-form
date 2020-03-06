@@ -120,6 +120,7 @@
         if (this.$v.$error) {
           return false;
         }
+	this.$v.$reset();
         this.beforeSubmit && await this.beforeSubmit(this.value);
         this.$emit('submit');
         this.saveOnSubmit && await this.save();
