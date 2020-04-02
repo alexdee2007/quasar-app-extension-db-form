@@ -12,7 +12,6 @@
   import { equalModelValues } from '../utils/strings';
   import { stopAndPrevent } from '../utils/events';
   import models from 'src/models';
-  import modelApi from 'src/api/model';
 
   export default {
     name: 'DbForm',
@@ -103,7 +102,7 @@
       async save() {
         try {
           this.$q.loading.show({message: 'Збереження...'});
-          const data = await modelApi.save(this.modelName, this.value);
+          const data = await this.$api.model.save(this.modelName, this.value);
           this.loadedValue = isEmpty(this.initialValue) ? merge({}, this.value, data) : pick(data, deepKeys(this.initialValue));
           this.$q.notify({color: 'positive', timeout: 2500, message: 'Дані успішно збережно', position: 'top', icon: 'done'});
           this.$emit('update:value', cloneDeep(this.loadedValue));
