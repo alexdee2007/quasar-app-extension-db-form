@@ -11,7 +11,7 @@
   import { get, set, merge, cloneDeep, isEqualWith, pick, isEmpty } from 'lodash';
   import { equalModelValues } from '../utils/strings';
   import { stopAndPrevent } from '../utils/events';
-  import models from 'src/models';
+  import * as models from 'src/models';
 
   export default {
     name: 'DbForm',
