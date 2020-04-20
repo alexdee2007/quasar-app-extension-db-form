@@ -120,10 +120,10 @@
         this.$emit('cancel');
       }
     },
-
-    validations() {
-      return {[this.value.$options.name]: this.validationValue};
-    },
+    /*
+     validations() {
+     return {[this.value.$options.name]: this.value.$validate};
+     },*/
     async mounted() {
       // console.log(this.value);
       //this.$emit('update:value', merge({}, this.initialValue, this.value));
@@ -131,7 +131,7 @@
       //this.model && (this.validationValue = merge({}, this.getValidationsRecursively(), get(this.extraValidations, this.modelName)));
       //this.isDirty && this.$v.$touch();
       //this.loadedValue = cloneDeep(this.value);
-     // this.validationValue = merge({}, this.getValidationsRecursively(), get(this.extraValidations, this.value.$options.name))
+      // this.validationValue = merge({}, this.getValidationsRecursively(), get(this.extraValidations, this.value.$options.name))
     }
   }
 </script>
