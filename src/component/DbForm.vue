@@ -138,8 +138,8 @@
       //this.loadedValue = cloneDeep(this.value);
       // this.validationValue = merge({}, this.getValidationsRecursively(), get(this.extraValidations, this.value.$options.name))
     },
-    destroyed() {
-     // this.value.$destroy();
+    beforeDestroy() {
+      this.value.$destroy();
     }
   }
 </script>
