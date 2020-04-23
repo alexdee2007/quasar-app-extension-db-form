@@ -97,11 +97,12 @@
 
         evt && stopAndPrevent(evt);
         this.value.$validate.$touch();
-
+        console.log('SUBMIT 1', this.value.$validate);
         if (this.value.$validate.$error) {
           return false;
         }
-        console.log('SUBMIT');
+        console.log('SUBMIT 2');
+        return;
         this.value.$validate.$reset();
         this.beforeSubmit && await this.beforeSubmit(this.value);
         await this.value.$commit(this.saveOnSubmit);
@@ -110,19 +111,24 @@
       reset(evt) {
         console.log('FORM reset');
         return;
-        evt && stopAndPrevent(evt)
+        /*
+         evt && stopAndPrevent(evt)
 
-        this.value.$reset();
-        this.$emit('reset');
+         this.value.$reset();
+         this.$emit('reset');
+         */
       },
 
       cancel(evt) {
-        return;
         console.log('FORM cancel');
-        evt && stopAndPrevent(evt);
+        return;
+        /*
+         console.log('FORM cancel');
+         evt && stopAndPrevent(evt);
 
-        this.value.$rollback();
-        this.$emit('cancel');
+         this.value.$rollback();
+         this.$emit('cancel');
+         */
       }
     },
     /*
