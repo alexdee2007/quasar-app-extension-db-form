@@ -13,8 +13,6 @@ function extendConf (conf) {
   // make sure boot & component files get transpiled
   conf.build.transpileDependencies.push(/quasar-app-extension-db-form[\\/]src/)
 
-  // make sure my-ext css goes through webpack to avoid ssr issues
-  conf.css.push('~quasar-app-extension-db-form/src/component/DbForm.styl')
 }
 
 module.exports = function (api) {
