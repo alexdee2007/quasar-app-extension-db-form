@@ -1,5 +1,5 @@
 <template>
-  <q-form @submit="submit" @reset="reset" v-bind="$attrs" v-on="$listeners">
+  <q-form @submit="submit" @reset="reset" v-bind="$attrs">
     <slot></slot>
   </q-form>
 </template>
@@ -36,7 +36,7 @@
         evt && stopAndPrevent(evt);
         this.value.$validate.$touch();
 
-        console.log('SUBMIT 1', this.value.$errors, this.value.$validate);
+        console.log('SUBMIT 1', this.value);
         if (this.value.$validate.$error) {
           return false;
         }
@@ -57,9 +57,6 @@
         this.value.$rollback();
         this.$emit('cancel');
       }
-    },
-    beforeDestroy() {
-      this.value.$destroy();
     }
   }
 </script>
