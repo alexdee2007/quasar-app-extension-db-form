@@ -1,5 +1,5 @@
 <template>
-  <q-form @submit="submit" @reset="reset" v-bind="$attrs">
+  <q-form @submit="submit" @reset="reset" :autofocus="autofocus">
     <slot></slot>
   </q-form>
 </template>
@@ -24,7 +24,8 @@
         type: Object,
         required: true
       },
-      saveOnSubmit: Boolean
+      saveOnSubmit: Boolean,
+      autofocus: Boolean
     },
     data() {
       return {
