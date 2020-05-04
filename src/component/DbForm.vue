@@ -34,15 +34,14 @@
     },
     methods: {
       async submit(evt) {
-        evt && stopAndPrevent(evt);
-        this.value.$validate();
 
-        console.log('SUBMIT 1', this.value);
+        evt && stopAndPrevent(evt);
+
+        this.value.$validate();
         if (this.value.$hasErrors) {
           return false;
         }
-        console.log('SUBMIT 2');
-        //return;
+
         this.value.$resetValidation();
         this.beforeSubmit && await this.beforeSubmit(this.value);
         await this.value.$commit(this.saveOnSubmit);
